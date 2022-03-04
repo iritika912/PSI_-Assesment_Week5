@@ -1,0 +1,89 @@
+1)
+create TABLE new_table LIKE table1;
+insert into new_table select * from TABLE1
+
+
+2)
+CREATE TABLE new_table LIKE table1
+
+
+3)
+select * from Student 
+ORDER BY id desc 
+limit 10
+
+select MAX(salary), MIN(salary) from Employee
+
+
+4)
+create TABLE Customers(cname varchar(255), city varchar(255), country(255))
+insert into Customers values("Iritika", "Delhi", "India")
+from jinja2 import Template
+tm = Template({{ Customers}})
+msg = tm.render(Customers=Customers)
+print(msg)
+
+
+5)
+select * from Student
+WHERE fname like 'P%' AND lname like 'S%'
+
+
+6)
+select * from Student 
+ORDER BY id desc 
+limit 1
+
+
+7)
+with mycte (BusinessEntityID, AddressTypeID, AddressID, Name) AS (
+    SELECT 
+        a.BusinessEntityID, 
+        a.AddressTypeID, 
+        a.AddressID,
+        b.Name
+        
+        FROM Person.BusinessEntityAddress a
+        JOIN Person.AddressType b on a.AddressTypeID = b.AddressTypeID
+)
+
+SELECT BusinessEntityID, AddressTypeID, AddressID, Name
+FROM mycte where AddressTypeID=2
+
+
+8)UPDATE:
+CREATE TRIGGER [dbo].[Customer_UPDATE]
+       ON [dbo].[Customers]
+AFTER UPDATE
+AS
+BEGIN
+       SET NOCOUNT ON;
+       DECLARE @CustomerId INT
+       DECLARE @Action VARCHAR(50)
+       SELECT @CustomerId = INSERTED.CustomerId       
+       FROM INSERTED
+       IF UPDATE(Name)
+       BEGIN
+              SET @Action = 'Updated Name'
+       END
+       IF UPDATE(Country)
+       BEGIN
+              SET @Action = 'Updated Country'
+       END
+       INSERT INTO CustomerLogs
+       VALUES(@CustomerId, @Action)
+END
+
+Delete:
+CREATE TRIGGER [dbo].[Customer_DELETE]
+       ON [dbo].[Customers]
+AFTER DELETE
+AS
+BEGIN
+       SET NOCOUNT ON;
+       DECLARE @CustomerId INT
+       SELECT @CustomerId = DELETED.CustomerId       
+       FROM DELETED
+       INSERT INTO CustomerLogs
+       VALUES(@CustomerId, 'Deleted')
+END
